@@ -1,4 +1,3 @@
-from extensions import mongo
 from bson.objectid import ObjectId
 from bson.binary import Binary
 import uuid, json, io
@@ -14,7 +13,9 @@ import os
 import datetime as dt
 from datetime import datetime, timedelta
 
+from flask_pymongo import PyMongo
 
+mongo = PyMongo()
 app = Flask(__name__)
 
 app.secret_key = "KrrrzPPghtfgSKbtJEQCTA"
