@@ -55,7 +55,6 @@ filelock==3.13.1
 Flask==3.0.2
 Flask-Cors==4.0.0
 Flask-PyMongo==2.3.0
-flask_pymongo==2.3.0
 flatbuffers==24.3.25
 fonttools==4.39.3
 fqdn==1.5.1
@@ -302,4 +301,3 @@ yarl==1.9.4
 yellowbrick==1.5
 youtube-search==2.1.2
 zipp==3.18.1
-flask_pymongo
