@@ -1,3 +1,5 @@
+from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify, send_file
+from pymongo import MongoClient
 from bson.objectid import ObjectId
 from bson.binary import Binary
 import uuid, json, io
@@ -6,12 +8,12 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import ssl, smtplib, hashlib, uuid
 from werkzeug.utils import secure_filename
-from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify, send_file
+
 import os
 import datetime as dt
 from datetime import datetime, timedelta
 app = Flask(__name__)
-from pymongo import MongoClient
+
 app.secret_key = "KrrrzPPghtfgSKbtJEQCTA"
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.permanent_session_lifetime = timedelta(minutes=15)
