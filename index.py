@@ -1,5 +1,5 @@
-# from bson.objectid import ObjectId
-# from bson.binary import Binary
+from bson.objectid import ObjectId
+from bson.binary import Binary
 import uuid, json, io
 import hashlib
 from email.mime.multipart import MIMEMultipart
