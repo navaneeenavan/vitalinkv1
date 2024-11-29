@@ -19,7 +19,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.permanent_session_lifetime = timedelta(minutes=15)
 
 client = MongoClient("mongodb+srv://21z233:vitalink@db.rj56s.mongodb.net/?retryWrites=true&w=majority&appName=db")
-db = client["myDatabase"]
+db = client["db"]
 
 
 #-----------FUNCTIONS-----------------
@@ -29,6 +29,7 @@ def addDoctor(cat, id, name, password):
     passHash = hashlib.sha512(password.encode('utf-8')).hexdigest()
     doctor = {'type': "Doctor", 'category': cat, 'ID': id, 'fullName': name, 'PassHash': passHash, "PFP":"/static/images/empty_user.jpg","patients":[]}
     db["dataset"].insert_one(doctor)
+    print("addition done")
     return doctor
 
 def addIT(id, name, password):
@@ -1117,8 +1118,8 @@ def internal_server_error(e):
     return render_template('500.html', error=str(e)), 500
 
 if __name__ == "__main__":
-    # addDoctor("Cardiologist","DOC00001","Aaditya Rengarajan","password")
-    # addDoctor("Clinical Pharmacist","DOC00002","Subhasri Shreya S L","password")
+    addDoctor("Cardiologist","DOC00001","Aaditya Rengarajan","password")
+    addDoctor("Clinical Pharmacist","DOC00002","Subhasri Shreya S L","password")
     # dosages = [
     # {"datetime": "2023-01-15T08:00:00I", "drug": "Warfarin", "strength": "90", "remark": ""},
     # {"datetime": "2023-01-22T08:00:00I", "drug": "Warfarin", "strength": "92", "remark": ""},
