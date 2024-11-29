@@ -214,7 +214,7 @@ def login():
                 session["user"] = json.dumps(myUser)
                 return redirect(url_for("it_page"))
 
-        dataset = list(mongo.db.dataset.find())
+        dataset = list(db["dataset"].find())
         patients = [i for i in dataset if "Patient ID" in list(dict(i).keys())]
         for i in patients:
             mypass = str("".join(i["Contact"].split(" ")[1:])).strip()
@@ -265,7 +265,7 @@ def doctor_home():
         patient.update({"caretaker":caretaker})
         print(patient["Patient ID"],patient["Name"])   
         myPatients.append(patient)
-    rawPatients = list(mongo.db.dataset.find_one({"ID": json.loads(session.get("user")).get("ID")}).get("patients"))
+    rawPatients = list(db["dataset"].find_one({"ID": json.loads(session.get("user")).get("ID")}).get("patients"))
     if len(toRemovePatients)>0:
         for i in toRemovePatients:
             rawPatients.remove(i)
@@ -328,7 +328,7 @@ def patient_specific_view(id):
     if json.loads(session.get("user")).get("category").lower() not in ["cardiologist", "resident"]:
         menu = "lowerMenu"
 
-    patient = dict(mongo.db.dataset.find_one({"Patient ID":id}))
+    patient = dict(db["dataset"].find_one({"Patient ID":id}))
     dosages = patient["inr_levels"]
     now = dt.datetime.now()
     start_date = patient["start_date"]
@@ -446,7 +446,7 @@ def end_therapy(PID):
     if json.loads(session.get("user")).get("category").lower() not in ["cardiologist", "resident"]:
         menu = "lowerMenu"
 
-    patient = dict(mongo.db.dataset.find_one({"Patient ID":PID}))
+    patient = dict(db["dataset"].find_one({"Patient ID":PID}))
     Drug = patient.get("Drug")
     if request.method=="GET":
         rzn = "3 Months Passed since Therapy Started"
@@ -472,7 +472,7 @@ def inr_level_reports(PID):
 
     return render_template("doctor/inr_uploads.html", menu=menu,
                     user=json.loads(session.get("user")),
-                    patient = dict(mongo.db.dataset.find_one({"Patient ID":PID})))
+                    patient = dict(db["dataset"].find_one({"Patient ID":PID})))
 
 @app.route('/doctor/inr_report/<filename>')
 def view_inr_filename(filename):
@@ -488,11 +488,11 @@ def historic_dosage_and_mis_dosage_view(id):
     if json.loads(session.get("user")).get("category").lower() not in ["cardiologist", "resident"]:
         menu = "lowerMenu"
 
-    Oid = str(dict(mongo.db.dataset.find_one({"Patient ID":id})).get("_id"))
+    Oid = str(dict(db["dataset"].find_one({"Patient ID":id})).get("_id"))
 
     return render_template("doctor/historic_dosage_and_mis_dosage_view.html", menu=menu,
                     user=json.loads(session.get("user")),
-                    patient = dict(mongo.db.dataset.find_one({"Patient ID":id})),
+                    patient = dict(db["dataset"].find_one({"Patient ID":id})),
                     missedDoses = listMissedDoses(Oid))
 
 @app.route("/doctor/assign-dosage/<id>", methods=["GET","POST"])
@@ -506,7 +506,7 @@ def assign_dosage(id):
         menu = "lowerMenu"
 
     if request.method=="GET":
-        patient = dict(mongo.db.dataset.find_one({"Patient ID":id}))
+        patient = dict(db["dataset"].find_one({"Patient ID":id}))
         dosages = patient["dosages"]
         now = dt.datetime.now()
         # Create an empty monthly dosage strength array
@@ -565,7 +565,7 @@ def assign_dosage(id):
                 SAT="SAT" in myDays ,
                 SUN="SUN" in myDays )
     else:
-        patient = dict(mongo.db.dataset.find_one({"Patient ID":id}))
+        patient = dict(db["dataset"].find_one({"Patient ID":id}))
         days = []
         def getbool(x):
             if x=="on":
@@ -1050,7 +1050,7 @@ def patient_profile():
     if "patient" not in session:
         return redirect("/login")
 
-    patient = dict(mongo.db.dataset.find_one({"Patient ID":json.loads(session.get("user"))["Patient ID"]}))
+    patient = dict(db["dataset"].find_one({"Patient ID":json.loads(session.get("user"))["Patient ID"]}))
     dosages = patient["dosages"]
     now = dt.datetime.now()
     # Create an empty monthly dosage strength array
