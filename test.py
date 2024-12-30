@@ -38,6 +38,16 @@ def addIT(id, name, password):
     db["dataset"].insert_one(doctor)
     return doctor
 
-
+print("hello world")
+print("hello world")
+print("hello world")
+print("hello world")
+print("hello world")
+print("hello world")
+print("hello world")
+print("hello world")
+print("hello world")
+print("hello world")
+print("hello world")
 
 addIT("IT00001", "Navanee", "Password")
